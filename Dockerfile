@@ -1,13 +1,4 @@
-FROM python:3.9-slim-bullseye AS build_gstreamer
-
-# Build and Pre-Install Gstreamer
-COPY ./scripts/build_gst.sh /build_gst.sh
-RUN GST_VERSION=1.22.3 LIBCAMERA_VERSION=v0.0.4 \
-    ./build_gst.sh && rm /build_gst.sh
-
-
 FROM python:3.9-slim-bullseye AS main
-
 
 # Setup the user environment
 RUN mkdir -p /home/pi && \
@@ -70,8 +61,10 @@ RUN apt update && \
         libx265-192 \
         libxml2
 
-# Install Pre-built GStreamer
-COPY --from=build_gstreamer /artifacts/. /.
+RUN apt search gstreamer
+RUN apt install --assume-yes --no-install-recommends \
+    # TOOLS:
+        gstreamer1.0-omx-rpi \ 
 
 # Update links for the installed libraries and check if GStreamer is setup correctly
 COPY ./scripts/inspect_gst_plugins.sh /inspect_gst_plugins.sh
