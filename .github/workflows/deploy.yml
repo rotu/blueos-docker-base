@@ -45,7 +45,7 @@ jobs:
           TAGS="$TAGS --tag ${DOCKER_USERNAME:-bluerobotics}/${{ matrix.new_project }}-${{ matrix.docker }}:${VERSION}"
           echo docker_image=${DOCKER_IMAGE} >> "$GITHUB_OUTPUT"
           echo version=${VERSION} >> "$GITHUB_OUTPUT"
-          echo buildx_args=\
+          echo buildx_args= \
             --build-arg VUE_APP_GIT_DESCRIBE=$(git describe --long --always --dirty --all) \
             --cache-from "type=local,src=/tmp/.buildx-cache" \
             --cache-to "type=local,dest=/tmp/.buildx-cache" \
