@@ -1,4 +1,4 @@
-FROM python:3.9-slim-bullseye AS main
+FROM python:3.9-slim-bullseye
 
 # Setup the user environment
 RUN mkdir -p /home/pi && \
@@ -63,8 +63,11 @@ RUN apt update && \
 
 RUN apt search gstreamer
 RUN apt install --assume-yes --no-install-recommends \
-    # TOOLS:
         gstreamer1.0-omx-rpi \ 
+        gstreamer1.0-plugins-good \
+        gstreamer1.0-plugins-bad \
+        gstreamer1.0-plugins-ugly \
+        gstreamer1.0-tools
 
 # Update links for the installed libraries and check if GStreamer is setup correctly
 COPY ./scripts/inspect_gst_plugins.sh /inspect_gst_plugins.sh
