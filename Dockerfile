@@ -81,6 +81,6 @@ COPY ./scripts/inspect_gst_plugins.sh /home/pi/tools/
 RUN ldconfig && /home/pi/tools/inspect_gst_plugins.sh
 
 # Install some tools
-RUN --mount type=bind,source=./scripts,target=/mnt/scripts /mnt/scripts/install_viu.sh
-RUN --mount type=bind,source=./scripts,target=/mnt/scripts /mnt/scripts/install_gping.sh
-RUN --mount type=bind,source=./scripts,target=/mnt/scripts /mnt/scripts/install_simple_http_server.sh
+RUN --mount type=bind,src=./scripts,dst=/mnt/scripts /mnt/scripts/install_viu.sh
+RUN --mount type=bind,src=./scripts,dst=/mnt/scripts /mnt/scripts/install_gping.sh
+RUN --mount type=bind,src=./scripts,dst=/mnt/scripts /mnt/scripts/install_simple_http_server.sh
