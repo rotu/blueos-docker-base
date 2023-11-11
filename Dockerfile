@@ -73,19 +73,14 @@ RUN apt update && \
 # Install Pre-built GStreamer
 COPY --from=build_gstreamer /artifacts/. /.
 
-# Update links for the installed libraries and check if GStreamer is setup correctly
-COPY ./scripts/inspect_gst_plugins.sh /inspect_gst_plugins.sh
-RUN ldconfig && \
-    /inspect_gst_plugins.sh && \
-    mkdir -p /home/pi/tools && \
-    mv /inspect_gst_plugins.sh /home/pi/tools/.
+# Update links for the installed libraries
+RUN ldconfig
+
+# check if GStreamer is setup correctly
+COPY ./scripts/inspect_gst_plugins.sh /home/pi/tools/
+RUN ldconfig && /home/pi/tools/inspect_gst_plugins.sh
 
 # Install some tools
-COPY ./scripts/install_viu.sh /install_viu.sh
-RUN ./install_viu.sh && rm /install_viu.sh
-
-COPY ./scripts/install_gping.sh /install_gping.sh
-RUN ./install_gping.sh && rm /install_gping.sh
-
-COPY ./scripts/install_simple_http_server.sh /install_simple_http_server.sh
-RUN ./install_simple_http_server.sh && rm /install_simple_http_server.sh
+RUN --mount type=bind,source=./scripts,target=/mnt/scripts /mnt/scripts/install_viu.sh
+RUN --mount type=bind,source=./scripts,target=/mnt/scripts /mnt/scripts/install_gping.sh
+RUN --mount type=bind,source=./scripts,target=/mnt/scripts /mnt/scripts/install_simple_http_server.sh
